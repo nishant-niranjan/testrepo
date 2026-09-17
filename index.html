@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Prime Number Checker</title>
+<style>
+  body {
+    font-family: system-ui, sans-serif;
+    max-width: 480px;
+    margin: 60px auto;
+    padding: 0 20px;
+    color: #222;
+    background: #fafafa;
+  }
+  h1 {
+    font-size: 1.4rem;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .input-row {
+    display: flex;
+    gap: 8px;
+  }
+  input[type="text"] {
+    flex: 1;
+    padding: 10px 12px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+  button {
+    padding: 10px 18px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 6px;
+    background: #2563eb;
+    color: white;
+    cursor: pointer;
+  }
+  button:hover {
+    background: #1d4ed8;
+  }
+  .message {
+    min-height: 1.2em;
+    margin-top: 8px;
+    font-size: 0.9rem;
+    color: #b91c1c;
+  }
+  ul#results {
+    list-style: none;
+    padding: 0;
+    margin-top: 24px;
+  }
+  ul#results li {
+    padding: 8px 12px;
+    border-bottom: 1px solid #e5e5e5;
+    font-size: 0.95rem;
+  }
+  ul#results li.prime {
+    color: #15803d;
+  }
+  ul#results li.not-prime {
+    color: #555;
+  }
+</style>
+</head>
+<body>
+  <h1>Prime Number Checker</h1>
+  <div class="input-row">
+    <input type="text" id="numberInput" placeholder="Enter a number" autofocus>
+    <button id="checkBtn">Check</button>
+  </div>
+  <div class="message" id="message"></div>
+  <ul id="results"></ul>
+
+<script>
+function isPrime(n) {
+  if (n < 2) return false;
+  if (n === 2 || n === 3) return true;
+  if (n % 2 === 0) return false;
+  for (let d = 3; d * d <= n; d += 2) {
+    if (n % d === 0) return false;
+  }
+  return true;
+}
+
+const input = document.getElementById('numberInput');
+const button = document.getElementById('checkBtn');
+const message = document.getElementById('message');
+const results = document.getElementById('results');
+
+function checkNumber() {
+  const raw = input.value.trim();
+  message.textContent = '';
+
+  if (raw === '') {
+    message.textContent = 'Enter a number to check';
+    return;
+  }
+
+  if (!/^-?\d+$/.test(raw)) {
+    message.textContent = `"${raw}" is not a valid integer`;
+    return;
+  }
+
+  const n = parseInt(raw, 10);
+  const prime = isPrime(n);
+
+  const li = document.createElement('li');
+  li.className = prime ? 'prime' : 'not-prime';
+  li.textContent = `${n} ${prime ? 'is a prime number' : 'is not a prime number'}`;
+  results.appendChild(li);
+
+  input.value = '';
+  input.focus();
+}
+
+button.addEventListener('click', checkNumber);
+input.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') checkNumber();
+});
+</script>
+</body>
+</html>
